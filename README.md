@@ -179,10 +179,40 @@ N -- Sí --> D
 N -- No --> O([Fin])
 ```
 *Elaboración propia.* <br>
-***Nota:** Este diagrama muestra el flujo de navegación y extracción de datos, detallando las iteraciones en la automatización. Implícitamente, después de cada `click_on_element()`, se ejecuta `switch_to_frame()`.*  
+***Nota:** El diagrama muestra el flujo de ejecución del script, incluyendo la iteración por años y módulos, la construcción de la URL de descarga, la obtención de los archivos desde el portal oficial del INEI y su extracción automática. En caso de que un archivo comprimido presente inconsistencias, el script conserva el archivo `.zip` y notifica al usuario que la extracción debe realizarse manualmente.*
 
 aaaaaaaaaaaaaaa
+```mermaid
+---
+title: Flujo del proceso de descarga y extracción de la ENAHO (2004–2025)
+---
+flowchart TD
 
+A([Inicio]) --> B[Definir directorio de trabajo]
+B --> C[Crear carpeta principal ENAHO]
+%% Agrupar iteración por año
+state "Iteración por años" as IA {
+C --> D{{Iterar por años<br/>2004–2025}}
+D --> E[Obtener Código de Encuesta]
+state "Iteración por módulos" as IM {
+E --> F{{Iterar por módulos}}
+F --> G[Construir URL de descarga]
+G --> H[Descargar archivo ZIP]
+H --> I[Descomprimir archivo ZIP]
+I --> J{¿Extracción exitosa?}
+J -- Sí --> K[Continuar con el siguiente módulo]
+J -- No --> L[Conservar archivo ZIP<br/>Mostrar mensaje de extracción manual]
+L --> K
+K --> M{¿Quedan módulos?}
+M -- Sí --> F
+}
+M -- No --> N{¿Quedan años?}
+N -- Sí --> D
+}
+N -- No --> O([Fin])
+```
+
+aaaaaaaaaaaaaaaaaa
 
 ```mermaid
 ---
@@ -222,7 +252,7 @@ C --> D
 N -- No --> O([Fin])
 ```
 
-
+sssssssssssssssssssss
 
 ```mermaid
 ---
