@@ -192,26 +192,34 @@ flowchart TD
 
 A([Inicio]) --> B[Definir directorio de trabajo]
 B --> C[Crear carpeta principal ENAHO]
-    %% Agrupar iteración por año
-    state "Iteración Años" as IA {    
-        C --> D{{Iterar por años<br/>2004–2025}}
-        D --> E[Obtener Código de Encuesta]
-    state "Iteración por módulos" as IM {           
-            E --> F{{Iterar por módulos}}
-            F --> G[Construir URL de descarga]
-            G --> H[Descargar archivo ZIP]
-            H --> I[Descomprimir archivo ZIP]
-            I --> J{¿Extracción exitosa?}
-            J -- Sí --> K[Continuar con el siguiente módulo]
-            J -- No --> L[Conservar archivo ZIP<br/>Mostrar mensaje de extracción manual]
-            L --> K
-            K --> M{¿Quedan módulos?}
-            M -- Sí --> F
-        }        
-        M -- No --> N{¿Quedan años?}
-        N -- Sí --> D
-        N -- No --> O([Fin])
-    }
+
+subgraph IA["Iteración por años"]
+    D{{Iterar por años<br/>2004–2025}}
+    E[Obtener Código de Encuesta]
+
+    subgraph IM["Iteración por módulos"]
+        F{{Iterar por módulos}}
+        G[Construir URL de descarga]
+        H[Descargar archivo ZIP]
+        I[Descomprimir archivo ZIP]
+        J{¿Extracción exitosa?}
+        K[Continuar con el siguiente módulo]
+        L[Conservar archivo ZIP<br/>Mostrar mensaje de extracción manual]
+
+        F --> G --> H --> I --> J
+        J -- Sí --> K
+        J -- No --> L --> K
+        K --> M{¿Quedan módulos?}
+        M -- Sí --> F
+    end
+
+    D --> E --> F
+    M -- No --> N{¿Quedan años?}
+    N -- Sí --> D
+end
+
+C --> D
+N -- No --> O([Fin])
 ```
 
 
