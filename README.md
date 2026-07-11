@@ -18,7 +18,7 @@ ___
 ___
 
 ## 1. Requisitos <a id='1'></a>
-
+___
 Para ejecutar este proyecto únicamente se requiere:
 - **Stata 16** o superior.
 - Permisos de escritura en el directorio donde se almacenarán los archivos descargados.
@@ -39,8 +39,9 @@ git clone https://github.com/CarloEduardo/01-Web-Scraping-ENAHO-2004-2025.git
 ```
 cd \E:\07. GitHub\01-Web-Scraping-ENAHO-2004-2025\
 ```
-## 2. Uso 
 
+## 3. Uso <a id="3"></a>
+___
 1. Abrir el archivo 
 ```bash
 Download-ENAHO-2004-2025.do
@@ -61,10 +62,12 @@ local year_end   = 25
 ```stata
 foreach j in 1 2 3 4 5 {
 ```
+___
 
 5. Ejecutar el script.
 
 ## 4. Estructura del proyecto 📂<a id="4"></a>
+___
 ```text
 .
 ├── Download-ENAHO-2004-2025.do
@@ -77,9 +80,10 @@ foreach j in 1 2 3 4 5 {
 ├── LICENSE
 └── README.md
 ```
+___
 
 ## 5. Funcionamiento del script <a id="5"></a>
-
+___
 El script realiza automáticamente las siguientes tareas:
 
 1. Crea la estructura de carpetas del proyecto.
@@ -115,117 +119,16 @@ Descomprimir
         ▼                  ▼
 Finaliza         Mantener ZIP para extracción manual
 ```
-
-
-
-
----
+___
 
 ## 6. Módulos disponibles <a id="6"></a>
 
 *(Aquí conservaría exactamente la tabla que ya elaboraste.)*
 
----
-
-## 7. Resultado <a id="7"></a>
-
-Al finalizar la ejecución se obtiene una estructura similar a la siguiente:
-
-```text
-01-ENAHO/
-│
-├──2004/
-│   ├── enaho01-2004.dta
-│   ├── enaho02-2004.dta
-│   └── ...
-│
-├──2005/
-│
-├──...
-│
-└──2025/
-```
-
-Cada carpeta contiene todos los módulos descargados y extraídos para el año correspondiente.
-
----
-
-## 8. Observaciones <a id="8"></a>
-
-En algunos años, determinados archivos ZIP publicados por el INEI presentan inconsistencias que impiden su extracción automática mediante Stata.
-
-Cuando esto ocurre, el script conserva el archivo comprimido y muestra un mensaje indicando que la extracción debe realizarse manualmente.
-
----
-
-## 9. Licencia <a id="9"></a>
-
-Este proyecto se distribuye bajo la licencia **MIT**.
-
-Consulta el archivo **LICENSE** para obtener más información.
-
----
-
-## 10. Contacto <a id="10"></a>
-
-**Carlos Eduardo Torres García**
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/carlo4-eduardo-torres-garcia/)
-
-[![X](https://img.shields.io/badge/X-000000?style=flat&logo=x&logoColor=white)](https://x.com/Carlo4_Eduardo)
-
-[**⬆ Volver al inicio**](#a)
-
-
-
-
-El siguiente diagrama muestra la lógica de todo el proceso para el caso de la **RUTA N°1: MUNICIPALIDADES**.
-
-```mermaid
----
-title: State Diagram del Proceso de Web Scraping (Ruta 1)
----
-stateDiagram
-    [*] --> IniciarDriver : initialize_driver()
-    IniciarDriver --> NavegarUrl : navigate_to_url()
-
-    %% Agrupar iteración por año
-    NavegarUrl --> SeleccionarAño : select_dropdown_option()
-    state "Iteración Años" as IA {
-        SeleccionarAño --> SeleccionarTipoGobierno : click_on_element()
-        SeleccionarTipoGobierno --> SeleccionarGobiernoLocal : click_on_element()
-        SeleccionarGobiernoLocal --> SeleccionarSubtipo : click_on_element()
-        SeleccionarSubtipo --> SeleccionarDepartamento : click_on_element()
-    }
-
-    %% Agrupar iteración por Departamento
-    state "Iteración Departamentos" as ID {
-        SeleccionarDepartamento --> LoopDepartamentos : por cada departamento
-        LoopDepartamentos --> ClickDepartamento : click_on_element(i)
-        ClickDepartamento --> SeleccionarProvincia : click_on_element()
-    }
-    
-    %% Retornos a provincia
-    GuardaDatos --> VolverProvincia : driver.back()
-    VolverProvincia --> LoopProvincias : siguiente provincia
-    %% Retornos a departamento
-    LoopProvincias --> VolverDepartamento : driver.back()
-    VolverDepartamento --> LoopDepartamentos : siguiente departamento
-    %% Retornos a años
-    LoopDepartamentos --> VolverAño : driver.back()
-    VolverAño --> SeleccionarAño : siguiente año
-
-    %% Finalización del scraping
-    SeleccionarAño --> [*]: Fin iteración por año
-
-```
-*Elaboración propia.* <br>
-***Nota:** Este diagrama muestra el flujo de navegación y extracción de datos, detallando las iteraciones en la automatización. Implícitamente, después de cada `click_on_element()`, se ejecuta `switch_to_frame()`.*  
-
 Módulos
 
 Este script incluye el tratamiento de los siguientes módulos:
-
+___
 <table>
 <thead><tr>
 <th><strong>Nro</strong></th>
@@ -386,6 +289,102 @@ Este script incluye el tratamiento de los siguientes módulos:
 </tr>
 </tbody>
 </table>
+___
+
+## 7. Resultado <a id="7"></a>
+___
+Al finalizar la ejecución se obtiene una estructura similar a la siguiente:
+
+```text
+01-ENAHO/
+│
+├──2004/
+│   ├── enaho01-2004.dta
+│   ├── enaho02-2004.dta
+│   └── ...
+│
+├──2005/
+│
+├──...
+│
+└──2025/
+```
+
+Cada carpeta contiene todos los módulos descargados y extraídos para el año correspondiente.
+___
+
+## 8. Observaciones <a id="8"></a>
+___
+En algunos años, determinados archivos ZIP publicados por el INEI presentan inconsistencias que impiden su extracción automática mediante Stata.
+
+Cuando esto ocurre, el script conserva el archivo comprimido y muestra un mensaje indicando que la extracción debe realizarse manualmente.
+___
+
+## 9. Licencia <a id="9"></a>
+___
+Este proyecto se distribuye bajo la licencia **MIT**.
+
+Consulta el archivo **LICENSE** para obtener más información.
+___
+
+## 10. Contacto <a id="10"></a>
+___
+**Carlos Eduardo Torres García**
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/carlo4-eduardo-torres-garcia/)
+
+[![X](https://img.shields.io/badge/X-000000?style=flat&logo=x&logoColor=white)](https://x.com/Carlo4_Eduardo)
+___
+
+[**⬆ Volver al inicio**](#a)
+
+
+
+
+El siguiente diagrama muestra la lógica de todo el proceso para el caso de la **RUTA N°1: MUNICIPALIDADES**.
+
+```mermaid
+---
+title: State Diagram del Proceso de Web Scraping (Ruta 1)
+---
+stateDiagram
+    [*] --> IniciarDriver : initialize_driver()
+    IniciarDriver --> NavegarUrl : navigate_to_url()
+
+    %% Agrupar iteración por año
+    NavegarUrl --> SeleccionarAño : select_dropdown_option()
+    state "Iteración Años" as IA {
+        SeleccionarAño --> SeleccionarTipoGobierno : click_on_element()
+        SeleccionarTipoGobierno --> SeleccionarGobiernoLocal : click_on_element()
+        SeleccionarGobiernoLocal --> SeleccionarSubtipo : click_on_element()
+        SeleccionarSubtipo --> SeleccionarDepartamento : click_on_element()
+    }
+
+    %% Agrupar iteración por Departamento
+    state "Iteración Departamentos" as ID {
+        SeleccionarDepartamento --> LoopDepartamentos : por cada departamento
+        LoopDepartamentos --> ClickDepartamento : click_on_element(i)
+        ClickDepartamento --> SeleccionarProvincia : click_on_element()
+    }
+    
+    %% Retornos a provincia
+    GuardaDatos --> VolverProvincia : driver.back()
+    VolverProvincia --> LoopProvincias : siguiente provincia
+    %% Retornos a departamento
+    LoopProvincias --> VolverDepartamento : driver.back()
+    VolverDepartamento --> LoopDepartamentos : siguiente departamento
+    %% Retornos a años
+    LoopDepartamentos --> VolverAño : driver.back()
+    VolverAño --> SeleccionarAño : siguiente año
+
+    %% Finalización del scraping
+    SeleccionarAño --> [*]: Fin iteración por año
+
+```
+*Elaboración propia.* <br>
+***Nota:** Este diagrama muestra el flujo de navegación y extracción de datos, detallando las iteraciones en la automatización. Implícitamente, después de cada `click_on_element()`, se ejecuta `switch_to_frame()`.*  
+
+
 
 ## Resultado 📂<a id='3'></a>
 
