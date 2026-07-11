@@ -13,13 +13,13 @@ Con el propósito de garantizar la reproducibilidad, la trazabilidad y el manten
 2. [**Instalación**](#2)
 3. [**Uso**](#3)
 4. [**Estructura del proyecto**](#4)
-5. [**Funcionamiento del script**](#5)
-6. [**Módulos disponibles**](#6)
+5. [**Módulos disponibles**](#5)
+6. [**Funcionamiento del script**](#6)
 7. [**Resultado**](#7)
 8. [**Observaciones**](#8)
 ___
 
-## 1. Requisitos <a id='1'></a>
+## 1. Requisitos ⚙️ <a id='1'></a>
 Para ejecutar este proyecto únicamente se requiere:
 - **Stata 16** o superior.
 - Permisos de escritura en el directorio donde se almacenarán los archivos descargados.
@@ -77,81 +77,8 @@ foreach j in 1 2 3 4 5 {
 ├── LICENSE
 └── README.md
 ```
+## 5. Módulos disponibles <a id="5"></a>
 
-## 5. Funcionamiento del script <a id="5"></a>
-El script realiza automáticamente las siguientes tareas:
-
-1. Crea la estructura de carpetas del proyecto.
-2. Recorre los años seleccionados.
-3. Obtiene el Código de Encuesta correspondiente a cada año.
-4. Recorre los módulos seleccionados.
-5. Descarga cada archivo ZIP desde el portal oficial del INEI.
-6. Descomprime automáticamente cada archivo.
-7. Conserva el archivo ZIP cuando ocurre un error durante la extracción.
-
-El proceso completo puede resumirse mediante el siguiente flujo:
-
-```text
-Seleccionar años
-        │
-        ▼
-Crear carpetas
-        │
-        ▼
-Iterar por año
-        │
-        ▼
-Iterar por módulos
-        │
-        ▼
-Descargar ZIP
-        │
-        ▼
-Descomprimir
-        │
-        ├─────────────► Error
-        │                  │
-        ▼                  ▼
-Finaliza         Mantener ZIP para extracción manual
-```
-
-El siguiente diagrama resume el flujo de ejecución del script para descargar y extraer automáticamente los módulos de la **Encuesta Nacional de Hogares (ENAHO)** correspondientes al período **2004–2025**.
-
-```mermaid
----
-title: Flujo del proceso de descarga y extracción de la ENAHO (2004–2025)
----
-flowchart TD
-
-A([Inicio]) --> B[Definir directorio de trabajo]
-B --> C[Crear carpeta principal ENAHO]
-C --> D{{Iterar por años<br/>2004–2025}}
-D --> E[Obtener Código de Encuesta]
-E --> F{{Iterar por módulos}}
-F --> G[Construir URL de descarga]
-G --> H[Descargar archivo ZIP]
-H --> I[Descomprimir archivo ZIP]
-I --> J{¿Extracción exitosa?}
-J -- Sí --> K[Continuar con el siguiente módulo]
-J -- No --> L[Conservar archivo ZIP<br/>Mostrar mensaje de extracción manual]
-L --> K
-K --> M{¿Quedan módulos?}
-M -- Sí --> F
-M -- No --> N{¿Quedan años?}
-N -- Sí --> D
-N -- No --> O([Fin])
-```
-
-*Elaboración propia.* <br>
-***Nota:** El diagrama muestra el flujo de ejecución del script, incluyendo la iteración por años y módulos, la construcción de la URL de descarga, la obtención de los archivos desde el portal oficial del INEI y su extracción automática. En caso de que un archivo comprimido presente inconsistencias, el script conserva el archivo `.zip` y notifica al usuario que la extracción debe realizarse manualmente.*
-
-## 6. Módulos disponibles <a id="6"></a>
-
-*(Aquí conservaría exactamente la tabla que ya elaboraste.)*
-
-Módulos
-
-Este script incluye el tratamiento de los siguientes módulos:
 ___
 <table>
 <thead><tr>
@@ -314,6 +241,75 @@ ___
 </tbody>
 </table>
 
+## 6. Funcionamiento del script <a id="6"></a>
+El script realiza automáticamente las siguientes tareas:
+
+1. Crea la estructura de carpetas del proyecto.
+2. Recorre los años seleccionados.
+3. Obtiene el Código de Encuesta correspondiente a cada año.
+4. Recorre los módulos seleccionados.
+5. Descarga cada archivo ZIP desde el portal oficial del INEI.
+6. Descomprime automáticamente cada archivo.
+7. Conserva el archivo ZIP cuando ocurre un error durante la extracción.
+
+El proceso completo puede resumirse mediante el siguiente flujo:
+
+```text
+Seleccionar años
+        │
+        ▼
+Crear carpetas
+        │
+        ▼
+Iterar por año
+        │
+        ▼
+Iterar por módulos
+        │
+        ▼
+Descargar ZIP
+        │
+        ▼
+Descomprimir
+        │
+        ├─────────────► Error
+        │                  │
+        ▼                  ▼
+Finaliza         Mantener ZIP para extracción manual
+```
+
+El siguiente diagrama resume el flujo de ejecución del script para descargar y extraer automáticamente los módulos de la **Encuesta Nacional de Hogares (ENAHO)** correspondientes al período **2004–2025**.
+
+```mermaid
+---
+title: Flujo del proceso de descarga y extracción de la ENAHO (2004–2025)
+---
+flowchart TD
+
+A([Inicio]) --> B[Definir directorio de trabajo]
+B --> C[Crear carpeta principal ENAHO]
+C --> D{{Iterar por años<br/>2004–2025}}
+D --> E[Obtener Código de Encuesta]
+E --> F{{Iterar por módulos}}
+F --> G[Construir URL de descarga]
+G --> H[Descargar archivo ZIP]
+H --> I[Descomprimir archivo ZIP]
+I --> J{¿Extracción exitosa?}
+J -- Sí --> K[Continuar con el siguiente módulo]
+J -- No --> L[Conservar archivo ZIP<br/>Mostrar mensaje de extracción manual]
+L --> K
+K --> M{¿Quedan módulos?}
+M -- Sí --> F
+M -- No --> N{¿Quedan años?}
+N -- Sí --> D
+N -- No --> O([Fin])
+```
+
+*Elaboración propia.* <br>
+***Nota:** El diagrama muestra el flujo de ejecución del script, incluyendo la iteración por años y módulos, la construcción de la URL de descarga, la obtención de los archivos desde el portal oficial del INEI y su extracción automática. En caso de que un archivo comprimido presente inconsistencias, el script conserva el archivo `.zip` y notifica al usuario que la extracción debe realizarse manualmente.*
+
+
+
 ## 7. Resultado 📂<a id="7"></a>
 Al finalizar la ejecución se obtiene una estructura similar a la siguiente:
 
@@ -340,7 +336,7 @@ Cuando esto ocurre, el script muestra un mensaje indicando que el archivo debe d
 ## Licencia <a id="9"></a>
 Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENSE](/LICENSE) para más detalles.
 
-## Contacto <a id="10"></a>
+## Autor 👨‍💻<a id="10"></a>
 
 **Carlos Eduardo Torres García**
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/carlo4-eduardo-torres-garcia/)
