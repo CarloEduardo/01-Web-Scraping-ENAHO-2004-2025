@@ -1,5 +1,3 @@
-[![DOI](https://zenodo.org/badge/930675080.svg)](https://doi.org/10.5281/zenodo.14876919)
-
 # Web Scraping: ENAHO 2004-2025 <a id='a'></a>
 
 Este proyecto en **Stata** proporciona una forma eficiente e integral de descargar, organizar y procesar la **Encuesta de hogares del Perú (ENAHO)** del portal [Microdatos](https://proyectos.inei.gob.pe/microdatos/) (Metodología ACTUALIZADA) del **Instituto Nacional de Estadística e Informática**para todos los años disponibles, desde 2004 hasta 2025.
@@ -44,7 +42,7 @@ cd \E:\07. GitHub\01-Web-Scraping-ENAHO-2004-2025\
 ## 3. 📂 Estructura del proyecto <a id='3'></a>
 
 ```
-├── Download-ENAHO-2004-2025.do  # Scripts de Web-scraping
+├── Download-ENAHO-2004-2025.do  # Script de Web-scraping
 │
 ├── ENAHO/
 │   ├── 2004/
@@ -63,8 +61,8 @@ Define rutas, parámetros de ejecución, navegación en la web y procesamiento d
 
 * Configuración del directorio y URL.
 
-| **Variable**        | **Descripción**                           |
-|---------------------|-------------------------------------------|
+| **Variable**       | **Descripción**                           |
+|--------------------|-------------------------------------------|
 | `PATH_BASE`        | Directorio principal                        |
 | `PATH_DATA_RAW`    | Ruta donde se almacenan los datos crudos  |
 | `PATH_DATA_PRO`    | Ruta donde se guardan los datos preprocesados |
@@ -80,34 +78,6 @@ Define rutas, parámetros de ejecución, navegación en la web y procesamiento d
 | `ROUTES`                 | Diccionario de rutas con sus respectivos niveles y acciones a ejecutar |
 | `FILE_CONFIGS`           | Diccionario con la configuración del archivo de salida, por cada ruta existente: <br> - `ENCABEZADOS_BASE` <br> - `ARCHIVO_SCRAPING`|
 | `CLEANING_CONFIGS`       | Diccionario con el nombre las columnas a procesar (`ENCABEZADOS_BASE`) y los nuevos nombres, definidos por cada ruta existente.|
-
-
-> [!NOTE]
-> Este script define los parámetros de configuración que pueden ser modificados de acuerdo a las necesidades. El objetivo es separar la configuración de la lógica del código principal.
-
-
-### 3.2. `b_scraper.py`
-
-Este script es el núcleo del proceso de scraping. Su función principal es automatizar la navegación en el portal definido, extraer los datos y almacenarla en un archivo de salida.
-
-* Carga la configuración desde `a_config.py`.
-* Define funciones especializadas.
-
-El script se compone de las siguientes funciones creadas:
-| **Función**               | **Descripción**                           |
-|---------------------------|-------------------------------------------|
-|`initialize_driver()`      | Configura y lanza el WebDriver.|
-|`navigate_to_url()`        | Accede a la URL objetivo.|
-|`switch_to_frame()`        | Reinicia/cambia el contexto al frame especificado.|
-|`click_on_element()`       | Hace clic en un elemento de la página.|
-|`select_dropdown_option()` | Selecciona una opción en un desplegable.|
-|`extract_table_data()`     | Extrae datos de una tabla en la web.|
-|`get_final_headers()`      | Extrae los encabezados de la tabla en la web.|
-|`navigate_levels()`          | Función recursiva que gestiona la navegación a través de los niveles jerárquicos.|
-|`extract_data_by_year()`   | Inicia la navegación iterativa para extraer datos, utilizando el contexto definido.|
-|`save_data()`              | Guarda los datos extraídos.|
-|`select_route()`           | Solicita al usuario seleccionar una ruta de navegación. | 
-|`main()`                   | Función principal que llama a las funciones en orden correcto.|
 
 El siguiente diagrama muestra la lógica de todo el proceso para el caso de la **RUTA N°1: MUNICIPALIDADES**.
 
@@ -221,177 +191,129 @@ Este script incluye el tratamiento de los siguientes módulos:
 <td>6</td>
 <td>7</td>
 <td>Gastos en Alimentos y Bebidas/td>
-<td>Numérico (entero)</td>
 </tr>
 <tr>
 <td>7</td>
 <td>8</td>
 <td>Instituciones Benéficas</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>8</td>
 <td>9</td>
 <td>Mantenimiento de la Vivienda</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>9</td>
 <td>10</td>
 <td>Transportes y Comunicaciones</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>10</td>
 <td>11</td>
 <td>Servicios de la Vivienda</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>11</td>
 <td>12</td>
 <td>Esparcimiento, Diversión y Servicios Culturales</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>12</td>
 <td>13</td>
 <td>Vestido y Calzado</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>13</td>
 <td>15</td>
 <td>Gastos de Transferencias</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>14</td>
 <td>16</td>
 <td>Muebles y Enseres</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>15</td>
 <td>17</td>
 <td>Otros Bienes y Servicios</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>16</td>
 <td>18</td>
 <td>Equipamiento del Hogar</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>17</td>
 <td>22</td>
 <td>Producción Agrícola</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>18</td>
 <td>23</td>
 <td>Subproductos Agrícolas</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>19</td>
 <td>24</td>
 <td>Producción Forestal</td>
-<td>Numérico (entero)</td>
 </tr>
 <tr>
 <td>20</td>
 <td>25</td>
 <td>Gastos en Actividades Agrícolas y/o Forestales</td>
-<td>Objeto</td>
 </tr>
 <tr>
 <td>21</td>
 <td>26</td>
 <td>Producción Pecuaria</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>22</td>
 <td>27</td>
 <td>Subproductos Pecuarios</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>23</td>
 <td>28</td>
 <td>Gastos en Actividades Pecuarias</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>24</td>
 <td>34</td>
 <td>Variables Calculadas (Resumen)</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>25</td>
 <td>37</td>
 <td>Programas Sociales</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>26</td>
 <td>77</td>
 <td>Ingresos del Trabajador Independiente</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>27</td>
 <td>78</td>
 <td>Bienes y Servicios para el Cuidado Personal</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>28</td>
 <td>84</td>
 <td>Participación Ciudadana</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>29</td>
 <td>85</td>
 <td>Gobernabilidad, Democracia y Transparencia</td>
-<td>Categórico</td>
 </tr>
 <tr>
 <td>30</td>
+<td>1825</td>
 <td>Beneficiarios de Instituciones sin fines de lucro: Olla Común</td>
-<td>Categórico</td>
 </tr>
 </tbody>
 </table>
-
-### 4.3. Ejecutar el `b_scraper.py`
-
-1. Para iniciar el **scraper** ejecutar el siguiente comando en la terminal CMD dentro del directorio del proyecto:
-
-```cmd
-python 02_src\b_scraper.py
-```
-
-2. Le mostrará la lista de rutas de navegación disponible. Debe elegir una ruta introduciendo el número.
-
-```cmd
---- Rutas disponibles ---
-1: MUNICIPALIDADES
-2: SECTORES
-
-Elige una ruta (número):
-```
-
-3. Una vez finalice correctamente saldrá el siguiente mensaje.
-```cmd
-✅ Proceso finalizado, driver cerrado.
-```
-
 
 ## Licencia
 Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENSE](/LICENSE) para más detalles.
