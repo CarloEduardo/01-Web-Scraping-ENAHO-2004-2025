@@ -10,13 +10,11 @@ Con el propósito de garantizar la reproducibilidad, la trazabilidad y el manten
 
 ## Contenido
 1. [**Requisitos**](#1)
-2. [**Instalación**](#2)
-3. [**Uso**](#3)
-4. [**Estructura del proyecto**](#4)
-5. [**Módulos disponibles**](#5)
-6. [**Funcionamiento del script**](#6)
-7. [**Resultado**](#7)
-8. [**Observaciones**](#8)
+2. [**Instalación y uso**](#2)
+3. [**Módulos disponibles**](#4)
+4. [**Funcionamiento del script**](#5)
+5. [**Resultado**](#6)
+6. [**Observaciones**](#7)
 ___
 
 ## 1. Requisitos ⚙️ <a id='1'></a>
@@ -25,7 +23,7 @@ Para ejecutar este proyecto únicamente se requiere:
 - Permisos de escritura en el directorio donde se almacenarán los archivos descargados.
 - **Git** (opcional), para clonar el repositorio.
 
-## 2. Instalación 🚀 <a id='2'></a>
+## 2. Instalación y uso 🚀 <a id='2'></a>
 
 ### 2.1. Clonar el repositorio
 
@@ -40,7 +38,8 @@ git clone https://github.com/CarloEduardo/01-Web-Scraping-ENAHO-2004-2025.git
 cd \E:\07. GitHub\01-Web-Scraping-ENAHO-2004-2025\
 ```
 
-## 3. Uso <a id="3"></a>
+### 2.1. Uso
+
 1. Abrir el archivo 
 ```bash
 Download-ENAHO-2004-2025.do
@@ -64,21 +63,7 @@ foreach j in 1 2 3 4 5 {
 
 5. Ejecutar el script.
 
-## 4. Estructura del proyecto 📂<a id="4"></a>
-```text
-│
-├── Download-ENAHO-2004-2025.do
-├── 01-ENAHO/
-│   ├──2004/
-│   ├──2005/
-│   ├──...
-│   └──2025/
-│
-├── LICENSE
-└── README.md
-```
-## 5. Módulos disponibles <a id="5"></a>
-
+## 3. Módulos disponibles <a id="3"></a>
 ___
 <table>
 <thead><tr>
@@ -241,7 +226,7 @@ ___
 </tbody>
 </table>
 
-## 6. Funcionamiento del script <a id="6"></a>
+## 4. Funcionamiento del script <a id="4"></a>
 El script realiza automáticamente las siguientes tareas:
 
 1. Crea la estructura de carpetas del proyecto.
@@ -254,31 +239,8 @@ El script realiza automáticamente las siguientes tareas:
 
 El proceso completo puede resumirse mediante el siguiente flujo:
 
-```text
-Seleccionar años
-        │
-        ▼
-Crear carpetas
-        │
-        ▼
-Iterar por año
-        │
-        ▼
-Iterar por módulos
-        │
-        ▼
-Descargar ZIP
-        │
-        ▼
-Descomprimir
-        │
-        ├─────────────► Error
-        │                  │
-        ▼                  ▼
-Finaliza         Mantener ZIP para extracción manual
-```
 
-El siguiente diagrama resume el flujo de ejecución del script para descargar y extraer automáticamente los módulos de la **Encuesta Nacional de Hogares (ENAHO)** correspondientes al período **2004–2025**.
+El siguiente diagrama resume el flujo de ejecución del script para descargar y extraer automáticamente los módulos de la **Encuesta Nacional de Hogares (ENAHO)**:
 
 ```mermaid
 ---
@@ -308,9 +270,7 @@ N -- No --> O([Fin])
 *Elaboración propia.* <br>
 ***Nota:** El diagrama muestra el flujo de ejecución del script, incluyendo la iteración por años y módulos, la construcción de la URL de descarga, la obtención de los archivos desde el portal oficial del INEI y su extracción automática. En caso de que un archivo comprimido presente inconsistencias, el script conserva el archivo `.zip` y notifica al usuario que la extracción debe realizarse manualmente.*
 
-
-
-## 7. Resultado 📂<a id="7"></a>
+## 5. Resultado 📂<a id="5"></a>
 Al finalizar la ejecución se obtiene una estructura similar a la siguiente:
 
 ```text
@@ -329,7 +289,7 @@ Al finalizar la ejecución se obtiene una estructura similar a la siguiente:
 ```
 Cada carpeta contiene todos los módulos descargados y extraídos para el año correspondiente.
 
-## 8. Observaciones ⚠️<a id="8"></a>
+## 6. Observaciones ⚠️<a id="6"></a>
 En algunos años, determinados archivos ZIP publicados por el INEI presentan inconsistencias que impiden su extracción automática mediante Stata.
 Cuando esto ocurre, el script muestra un mensaje indicando que el archivo debe descomprimirse manualmente. El archivo ZIP descargado se conserva para facilitar este proceso.
 
