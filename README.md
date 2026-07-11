@@ -1,6 +1,6 @@
 # Web Scraping: ENAHO 2004–2025 <a id='a'></a>
 
-Este proyecto en **Stata** proporciona una solución automatizada para descargar, organizar y procesar la **Encuesta Nacional de Hogares (ENAHO)** del Perú a partir del portal oficial de [**Microdatos**](https://proyectos.inei.gob.pe/microdatos/) del **Instituto Nacional de Estadística e Informática (INEI)**, utilizando la **metodología actualizada**. El script permite obtener la información disponible para todos los años comprendidos entre **2004 y 2025**.
+Este proyecto en **Stata** proporciona una solución automatizada para descargar, organizar y procesar la **Encuesta Nacional de Hogares (ENAHO)** del Perú a partir del portal [**Microdatos**](https://proyectos.inei.gob.pe/microdatos/) del **Instituto Nacional de Estadística e Informática (INEI)**. El script permite obtener la información disponible para todos los años comprendidos entre **2004 y 2025**.
 
 El objetivo principal es automatizar la descarga de todos los módulos de la encuesta directamente desde los servidores oficiales del INEI. Además, el script descomprime automáticamente los archivos en formato **`.zip`**, lo que permite construir un flujo de trabajo eficiente, reproducible y fácilmente actualizable para el procesamiento de los microdatos. En aquellos casos en que los archivos comprimidos presenten errores o inconsistencias, el script conserva el archivo descargado y notifica al usuario que la extracción deberá realizarse manualmente.
 
@@ -9,21 +9,21 @@ El proceso sigue una estructura jerárquica de iteración, recorriendo primero l
 Con el propósito de garantizar la reproducibilidad, la trazabilidad y el mantenimiento del proyecto, el código se gestiona mediante **Git** y se encuentra alojado en **GitHub**, lo que facilita el control de versiones, la documentación de los cambios y la colaboración con otros usuarios.
 
 ## Contenido
-___
 1. [**Requisitos**](#1)
 2. [**Instalación**](#2)
-3. [**Estructura del Proyecto**](#3)
-4. [**Uso**](#4)
-4. [**Observaciones**](#5)
+3. [**Uso**](#3)
+4. [**Estructura del proyecto**](#4)
+5. [**Funcionamiento del script**](#5)
+6. [**Módulos disponibles**](#6)
+7. [**Resultado**](#7)
+8. [**Observaciones**](#8)
 ___
 
 ## 1. Requisitos <a id='1'></a>
-___
 Para ejecutar este proyecto únicamente se requiere:
 - **Stata 16** o superior.
 - Permisos de escritura en el directorio donde se almacenarán los archivos descargados.
 - **Git** (opcional), para clonar el repositorio.
----
 
 ## 2. Instalación 🚀 <a id='2'></a>
 
@@ -41,7 +41,6 @@ cd \E:\07. GitHub\01-Web-Scraping-ENAHO-2004-2025\
 ```
 
 ## 3. Uso <a id="3"></a>
-___
 1. Abrir el archivo 
 ```bash
 Download-ENAHO-2004-2025.do
@@ -62,14 +61,12 @@ local year_end   = 25
 ```stata
 foreach j in 1 2 3 4 5 {
 ```
-___
 
 5. Ejecutar el script.
 
 ## 4. Estructura del proyecto 📂<a id="4"></a>
-___
 ```text
-.
+│
 ├── Download-ENAHO-2004-2025.do
 ├── 01-ENAHO/
 │   ├──2004/
@@ -80,10 +77,8 @@ ___
 ├── LICENSE
 └── README.md
 ```
-___
 
 ## 5. Funcionamiento del script <a id="5"></a>
-___
 El script realiza automáticamente las siguientes tareas:
 
 1. Crea la estructura de carpetas del proyecto.
@@ -124,38 +119,6 @@ El siguiente diagrama resume el flujo de ejecución del script para descargar y 
 
 ```mermaid
 ---
-title: Flujo de descarga y extracción de la ENAHO (2004–2025)
----
-flowchart LR
-
-A([Inicio]) --> B[Configurar directorio]
-B --> C[Crear carpeta ENAHO]
-C --> D{{Años<br/>2004–2025}}
-
-D --> E[Obtener<br/>Código de Encuesta]
-E --> F{{Módulos}}
-
-F --> G[Descargar<br/>ZIP]
-G --> H[Extraer<br/>ZIP]
-
-H --> I{¿Correcto?}
-
-I -- Sí --> J[Siguiente módulo]
-I -- No --> K[Conservar ZIP<br/>Mostrar advertencia]
-
-K --> J
-J --> F
-
-F --> L{¿Más años?}
-L -- Sí --> D
-L -- No --> M([Fin])
-```
-El siguiente diagrama muestra la lógica de todo el proceso para el caso de la **RUTA N°1: MUNICIPALIDADES**.
-
-El siguiente diagrama resume el flujo de ejecución del script para descargar y extraer automáticamente los módulos de la **Encuesta Nacional de Hogares (ENAHO)** correspondientes al período **2004–2025**.
-
-```mermaid
----
 title: Flujo del proceso de descarga y extracción de la ENAHO (2004–2025)
 ---
 flowchart TD
@@ -178,109 +141,9 @@ M -- No --> N{¿Quedan años?}
 N -- Sí --> D
 N -- No --> O([Fin])
 ```
+
 *Elaboración propia.* <br>
 ***Nota:** El diagrama muestra el flujo de ejecución del script, incluyendo la iteración por años y módulos, la construcción de la URL de descarga, la obtención de los archivos desde el portal oficial del INEI y su extracción automática. En caso de que un archivo comprimido presente inconsistencias, el script conserva el archivo `.zip` y notifica al usuario que la extracción debe realizarse manualmente.*
-
-aaaaaaaaaaaaaaa
-```mermaid
----
-title: Flujo del proceso de descarga y extracción de la ENAHO (2004–2025)
----
-flowchart TD
-
-A([Inicio]) --> B[Definir directorio de trabajo]
-B --> C[Crear carpeta principal ENAHO]
-%% Agrupar iteración por año
-state "Iteración por años" as IA {
-C --> D{{Iterar por años<br/>2004–2025}}
-D --> E[Obtener Código de Encuesta]
-state "Iteración por módulos" as IM {
-E --> F{{Iterar por módulos}}
-F --> G[Construir URL de descarga]
-G --> H[Descargar archivo ZIP]
-H --> I[Descomprimir archivo ZIP]
-I --> J{¿Extracción exitosa?}
-J -- Sí --> K[Continuar con el siguiente módulo]
-J -- No --> L[Conservar archivo ZIP<br/>Mostrar mensaje de extracción manual]
-L --> K
-K --> M{¿Quedan módulos?}
-M -- Sí --> F
-}
-M -- No --> N{¿Quedan años?}
-N -- Sí --> D
-}
-N -- No --> O([Fin])
-```
-
-aaaaaaaaaaaaaaaaaa
-
-```mermaid
----
-title: Flujo del proceso de descarga y extracción de la ENAHO (2004–2025)
----
-flowchart TD
-
-A([Inicio]) --> B[Definir directorio de trabajo]
-B --> C[Crear carpeta principal ENAHO]
-
-subgraph IA["Iteración por años"]
-    D{{Iterar por años<br/>2004–2025}}
-    E[Obtener Código de Encuesta]
-
-    subgraph IM["Iteración por módulos"]
-        F{{Iterar por módulos}}
-        G[Construir URL de descarga]
-        H[Descargar archivo ZIP]
-        I[Descomprimir archivo ZIP]
-        J{¿Extracción exitosa?}
-        K[Continuar con el siguiente módulo]
-        L[Conservar archivo ZIP<br/>Mostrar mensaje de extracción manual]
-
-        F --> G --> H --> I --> J
-        J -- Sí --> K
-        J -- No --> L --> K
-        K --> M{¿Quedan módulos?}
-        M -- Sí --> F
-    end
-
-    D --> E --> F
-    M -- No --> N{¿Quedan años?}
-    N -- Sí --> D
-end
-
-C --> D
-N -- No --> O([Fin])
-```
-
-sssssssssssssssssssss
-
-```mermaid
----
-title: State Diagram del Proceso de Web Scraping (Ruta 1)
----
-stateDiagram
-    [*] --> IniciarDriver : initialize_driver()
-    IniciarDriver --> NavegarUrl : navigate_to_url()
-
-    %% Agrupar iteración por año
-    NavegarUrl --> SeleccionarAño : select_dropdown_option()
-    state "Iteración Años" as IA {
-        SeleccionarAño --> SeleccionarTipoGobierno : click_on_element()
-        SeleccionarTipoGobierno --> SeleccionarGobiernoLocal : click_on_element()
-        SeleccionarGobiernoLocal --> SeleccionarSubtipo : click_on_element()
-        SeleccionarSubtipo --> SeleccionarDepartamento : click_on_element()
-    }
-
-    %% Agrupar iteración por Departamento
-    state "Iteración Departamentos" as ID {
-        SeleccionarDepartamento --> LoopDepartamentos : por cada departamento
-        LoopDepartamentos --> ClickDepartamento : click_on_element(i)
-        ClickDepartamento --> SeleccionarProvincia : click_on_element()
-    }
-```
-*Elaboración propia.* <br>
-***Nota:** Este diagrama muestra el flujo de navegación y extracción de datos, detallando las iteraciones en la automatización. Implícitamente, después de cada `click_on_element()`, se ejecuta `switch_to_frame()`.*  
-
 
 ## 6. Módulos disponibles <a id="6"></a>
 
@@ -474,11 +337,11 @@ Cada carpeta contiene todos los módulos descargados y extraídos para el año c
 En algunos años, determinados archivos ZIP publicados por el INEI presentan inconsistencias que impiden su extracción automática mediante Stata.
 Cuando esto ocurre, el script muestra un mensaje indicando que el archivo debe descomprimirse manualmente. El archivo ZIP descargado se conserva para facilitar este proceso.
 
-## 9. Licencia <a id="9"></a>
+## Licencia <a id="9"></a>
 Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENSE](/LICENSE) para más detalles.
 
-## 10. Contacto <a id="10"></a>
-___
+## Contacto <a id="10"></a>
+
 **Carlos Eduardo Torres García**
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/carlo4-eduardo-torres-garcia/)
 [![X Twitter](https://img.shields.io/badge/Twitter-000000?style=flat&logo=x&logoColor=white)](https://x.com/Carlo4_Eduardo)
