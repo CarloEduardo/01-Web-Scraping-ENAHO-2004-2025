@@ -119,8 +119,6 @@ Descomprimir
         ▼                  ▼
 Finaliza         Mantener ZIP para extracción manual
 ```
-___
-
 
 El siguiente diagrama resume el flujo de ejecución del script para descargar y extraer automáticamente los módulos de la **Encuesta Nacional de Hogares (ENAHO)** correspondientes al período **2004–2025**.
 
@@ -182,6 +180,40 @@ N -- No --> O([Fin])
 ```
 *Elaboración propia.* <br>
 ***Nota:** Este diagrama muestra el flujo de navegación y extracción de datos, detallando las iteraciones en la automatización. Implícitamente, después de cada `click_on_element()`, se ejecuta `switch_to_frame()`.*  
+
+aaaaaaaaaaaaaaa
+
+
+```mermaid
+---
+title: Flujo del proceso de descarga y extracción de la ENAHO (2004–2025)
+---
+flowchart TD
+
+A([Inicio]) --> B[Definir directorio de trabajo]
+B --> C[Crear carpeta principal ENAHO]
+    %% Agrupar iteración por año
+    state "Iteración Años" as IA {    
+        C --> D{{Iterar por años<br/>2004–2025}}
+        D --> E[Obtener Código de Encuesta]
+    state "Iteración Años" as IA {           
+            E --> F{{Iterar por módulos}}
+            F --> G[Construir URL de descarga]
+            G --> H[Descargar archivo ZIP]
+            H --> I[Descomprimir archivo ZIP]
+            I --> J{¿Extracción exitosa?}
+            J -- Sí --> K[Continuar con el siguiente módulo]
+            J -- No --> L[Conservar archivo ZIP<br/>Mostrar mensaje de extracción manual]
+            L --> K
+            K --> M{¿Quedan módulos?}
+            M -- Sí --> F
+        }        
+        M -- No --> N{¿Quedan años?}
+        N -- Sí --> D
+        N -- No --> O([Fin])
+    }
+```
+
 
 
 ```mermaid
