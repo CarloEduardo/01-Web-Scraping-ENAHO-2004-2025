@@ -121,6 +121,97 @@ Finaliza         Mantener ZIP para extracción manual
 ```
 ___
 
+
+El siguiente diagrama resume el flujo de ejecución del script para descargar y extraer automáticamente los módulos de la **Encuesta Nacional de Hogares (ENAHO)** correspondientes al período **2004–2025**.
+
+```mermaid
+---
+title: Flujo de descarga y extracción de la ENAHO (2004–2025)
+---
+flowchart LR
+
+A([Inicio]) --> B[Configurar directorio]
+B --> C[Crear carpeta ENAHO]
+C --> D{{Años<br/>2004–2025}}
+
+D --> E[Obtener<br/>Código de Encuesta]
+E --> F{{Módulos}}
+
+F --> G[Descargar<br/>ZIP]
+G --> H[Extraer<br/>ZIP]
+
+H --> I{¿Correcto?}
+
+I -- Sí --> J[Siguiente módulo]
+I -- No --> K[Conservar ZIP<br/>Mostrar advertencia]
+
+K --> J
+J --> F
+
+F --> L{¿Más años?}
+L -- Sí --> D
+L -- No --> M([Fin])
+```
+El siguiente diagrama muestra la lógica de todo el proceso para el caso de la **RUTA N°1: MUNICIPALIDADES**.
+
+El siguiente diagrama resume el flujo de ejecución del script para descargar y extraer automáticamente los módulos de la **Encuesta Nacional de Hogares (ENAHO)** correspondientes al período **2004–2025**.
+
+```mermaid
+---
+title: Flujo del proceso de descarga y extracción de la ENAHO (2004–2025)
+---
+flowchart TD
+
+A([Inicio]) --> B[Definir directorio de trabajo]
+B --> C[Crear carpeta principal ENAHO]
+C --> D{{Iterar por años<br/>2004–2025}}
+D --> E[Obtener Código de Encuesta]
+E --> F{{Iterar por módulos}}
+F --> G[Construir URL de descarga]
+G --> H[Descargar archivo ZIP]
+H --> I[Descomprimir archivo ZIP]
+I --> J{¿Extracción exitosa?}
+J -- Sí --> K[Continuar con el siguiente módulo]
+J -- No --> L[Conservar archivo ZIP<br/>Mostrar mensaje de extracción manual]
+L --> K
+K --> M{¿Quedan módulos?}
+M -- Sí --> F
+M -- No --> N{¿Quedan años?}
+N -- Sí --> D
+N -- No --> O([Fin])
+```
+*Elaboración propia.* <br>
+***Nota:** Este diagrama muestra el flujo de navegación y extracción de datos, detallando las iteraciones en la automatización. Implícitamente, después de cada `click_on_element()`, se ejecuta `switch_to_frame()`.*  
+
+
+```mermaid
+---
+title: State Diagram del Proceso de Web Scraping (Ruta 1)
+---
+stateDiagram
+    [*] --> IniciarDriver : initialize_driver()
+    IniciarDriver --> NavegarUrl : navigate_to_url()
+
+    %% Agrupar iteración por año
+    NavegarUrl --> SeleccionarAño : select_dropdown_option()
+    state "Iteración Años" as IA {
+        SeleccionarAño --> SeleccionarTipoGobierno : click_on_element()
+        SeleccionarTipoGobierno --> SeleccionarGobiernoLocal : click_on_element()
+        SeleccionarGobiernoLocal --> SeleccionarSubtipo : click_on_element()
+        SeleccionarSubtipo --> SeleccionarDepartamento : click_on_element()
+    }
+
+    %% Agrupar iteración por Departamento
+    state "Iteración Departamentos" as ID {
+        SeleccionarDepartamento --> LoopDepartamentos : por cada departamento
+        LoopDepartamentos --> ClickDepartamento : click_on_element(i)
+        ClickDepartamento --> SeleccionarProvincia : click_on_element()
+    }
+```
+*Elaboración propia.* <br>
+***Nota:** Este diagrama muestra el flujo de navegación y extracción de datos, detallando las iteraciones en la automatización. Implícitamente, después de cada `click_on_element()`, se ejecuta `switch_to_frame()`.*  
+
+
 ## 6. Módulos disponibles <a id="6"></a>
 
 *(Aquí conservaría exactamente la tabla que ya elaboraste.)*
@@ -323,128 +414,3 @@ ___
 [![X Twitter](https://img.shields.io/badge/Twitter-000000?style=flat&logo=x&logoColor=white)](https://x.com/Carlo4_Eduardo)
 
 [**⬆ Volver al inicio**](#a)
-
-El siguiente diagrama resume el flujo de ejecución del script para descargar y extraer automáticamente los módulos de la **Encuesta Nacional de Hogares (ENAHO)** correspondientes al período **2004–2025**.
-
-
-```mermaid
-flowchart LR
-
-A([Inicio])
---> B[Configurar directorio]
---> C{{Años<br/>2004–2025}}
---> D[Obtener código<br/>de encuesta]
---> E{{Módulos}}
---> F[Descargar ZIP]
---> G[Extraer ZIP]
---> H{¿Extracción<br/>correcta?}
-
-H -- Sí --> E
-H -- No --> I[Conservar ZIP<br/>y mostrar advertencia]
-I --> E
-
-E --> J([Fin])
-```
-
-```mermaid
----
-title: Flujo de descarga y extracción de la ENAHO (2004–2025)
----
-flowchart LR
-
-A([Inicio]) --> B[Configurar directorio]
-B --> C[Crear carpeta ENAHO]
-C --> D{{Años<br/>2004–2025}}
-
-D --> E[Obtener<br/>Código de Encuesta]
-E --> F{{Módulos}}
-
-F --> G[Descargar<br/>ZIP]
-G --> H[Extraer<br/>ZIP]
-
-H --> I{¿Correcto?}
-
-I -- Sí --> J[Siguiente módulo]
-I -- No --> K[Conservar ZIP<br/>Mostrar advertencia]
-
-K --> J
-J --> F
-
-F --> L{¿Más años?}
-L -- Sí --> D
-L -- No --> M([Fin])
-```
-
-
-
-
-```mermaid
----
-title: Flujo del proceso de descarga y extracción de la ENAHO (2004–2025)
----
-flowchart TD
-
-A([Inicio]) --> B[Definir directorio de trabajo]
-B --> C[Crear carpeta principal ENAHO]
-
-C --> D{{Iterar por años<br/>2004–2025}}
-
-D --> E[Obtener Código de Encuesta]
-
-E --> F{{Iterar por módulos}}
-
-F --> G[Construir URL de descarga]
-
-G --> H[Descargar archivo ZIP]
-
-H --> I[Descomprimir archivo ZIP]
-
-I --> J{¿Extracción exitosa?}
-
-J -- Sí --> K[Continuar con el siguiente módulo]
-
-J -- No --> L[Conservar archivo ZIP<br/>Mostrar mensaje de extracción manual]
-
-L --> K
-
-K --> M{¿Quedan módulos?}
-
-M -- Sí --> F
-
-M -- No --> N{¿Quedan años?}
-
-N -- Sí --> D
-
-N -- No --> O([Fin])
-```
-
-
-El siguiente diagrama muestra la lógica de todo el proceso para el caso de la **RUTA N°1: MUNICIPALIDADES**.
-
-```mermaid
----
-title: State Diagram del Proceso de Web Scraping (Ruta 1)
----
-stateDiagram
-    [*] --> IniciarDriver : initialize_driver()
-    IniciarDriver --> NavegarUrl : navigate_to_url()
-
-    %% Agrupar iteración por año
-    NavegarUrl --> SeleccionarAño : select_dropdown_option()
-    state "Iteración Años" as IA {
-        SeleccionarAño --> SeleccionarTipoGobierno : click_on_element()
-        SeleccionarTipoGobierno --> SeleccionarGobiernoLocal : click_on_element()
-        SeleccionarGobiernoLocal --> SeleccionarSubtipo : click_on_element()
-        SeleccionarSubtipo --> SeleccionarDepartamento : click_on_element()
-    }
-
-    %% Agrupar iteración por Departamento
-    state "Iteración Departamentos" as ID {
-        SeleccionarDepartamento --> LoopDepartamentos : por cada departamento
-        LoopDepartamentos --> ClickDepartamento : click_on_element(i)
-        ClickDepartamento --> SeleccionarProvincia : click_on_element()
-    }
-```
-*Elaboración propia.* <br>
-***Nota:** Este diagrama muestra el flujo de navegación y extracción de datos, detallando las iteraciones en la automatización. Implícitamente, después de cada `click_on_element()`, se ejecuta `switch_to_frame()`.*  
-
