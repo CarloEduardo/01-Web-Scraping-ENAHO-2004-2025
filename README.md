@@ -23,7 +23,7 @@ Este proyecto fue desarrollado con:
 
 Para ejecutar se necesita tener instaladas las siguientes dependencias:
 
-## 2. Instalación <a id='2'></a>
+## 2. Instalación y uso 🚀 <a id='2'></a>
 
 ### 2.1. Clonar el repositorio
 
@@ -33,13 +33,20 @@ Para ejecutar se necesita tener instaladas las siguientes dependencias:
 ```bash
 git clone https://github.com/CarloEduardo/01-Web-Scraping-ENAHO-2004-2025.git
 ```
-
 3. Establecer como directorio de trabajo la carpeta clonada.
 ```bash
 cd \E:\07. GitHub\01-Web-Scraping-ENAHO-2004-2025\
 ```
+### 2.2. Uso 
 
-## 3. 📂 Estructura del proyecto <a id='3'></a>
+1. Abrir el archivo 'Download-ENAHO-2004-2025.do' en Stata.
+
+2. Modificar la ruta de trabajo:
+global Path = "D:\MiProyecto\Web-Scraping-ENAHO-2004-2025"
+
+3. Ejecutar el script.
+
+## 3. Estructura del proyecto 📂<a id='3'></a>
 
 ```
 ├── Download-ENAHO-2004-2025.do  # Script de Web-scraping
@@ -69,16 +76,6 @@ Define rutas, parámetros de ejecución, navegación en la web y procesamiento d
 | `PATH_DRIVER`      | Ubicación del WebDriver                   |
 | `URL`              | Plataforma de la cual se extraen los datos |
 
-* Parámetros de Scraping y preprocesamiento
-
-| **Variable**             | **Descripción**                                     |
-|--------------------------|-----------------------------------------------------|
-| `YEARS`                  | Rango de años `list(range(2015, 2026))` (no incluye el limite superior) |
-| `GLOBAL_SELECTORS`       | Diccionario con selector de año y frame principal de la web|
-| `ROUTES`                 | Diccionario de rutas con sus respectivos niveles y acciones a ejecutar |
-| `FILE_CONFIGS`           | Diccionario con la configuración del archivo de salida, por cada ruta existente: <br> - `ENCABEZADOS_BASE` <br> - `ARCHIVO_SCRAPING`|
-| `CLEANING_CONFIGS`       | Diccionario con el nombre las columnas a procesar (`ENCABEZADOS_BASE`) y los nuevos nombres, definidos por cada ruta existente.|
-
 El siguiente diagrama muestra la lógica de todo el proceso para el caso de la **RUTA N°1: MUNICIPALIDADES**.
 
 ```mermaid
@@ -103,20 +100,6 @@ stateDiagram
         SeleccionarDepartamento --> LoopDepartamentos : por cada departamento
         LoopDepartamentos --> ClickDepartamento : click_on_element(i)
         ClickDepartamento --> SeleccionarProvincia : click_on_element()
-    }
-
-    %% Agrupar iteración por Provincia
-    state "Iteración Provincias" as IP {
-        SeleccionarProvincia --> LoopProvincias : por cada provincia
-        LoopProvincias --> ClickProvincia : click_on_element(j)
-        ClickProvincia --> SeleccionarMunicipalidad : click_on_element()
-    }
-
-    %% Agrupar extracción de datos
-    state "Extracción de Datos" as ED {
-        SeleccionarMunicipalidad --> ExtraerDatos : extract_table_data()
-        ExtraerDatos --> AgregarMetadatos : Metadatos (año, depto...)
-        AgregarMetadatos --> GuardaDatos : save_data()
     }
     
     %% Retornos a provincia
@@ -157,64 +140,64 @@ Este script incluye el tratamiento de los siguientes módulos:
 <table>
 <thead><tr>
 <th><strong>Nro</strong></th>
-<th><strong>Código Módulo</strong></th>
 <th><strong>Módulo</strong></th>
+<th><strong>Descripción</strong></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>1</td>
-<td>1</td>
+<td>Módulo 1</td>
 <td>Características de la Vivienda y del Hogar</td>
 </tr>
 <tr>
 <td>2</td>
-<td>2</td>
+<td>Módulo 2</td>
 <td>Características de los Miembros del Hogar</td>
 </tr>
 <tr>
 <td>3</td>
-<td>3</td>
+<td>Módulo 3</td>
 <td>Educación</td>
 </tr>
 <tr>
 <td>4</td>
-<td>4</td>
+<td>Módulo 4</td>
 <td>Salud</td>
 </tr>
 <tr>
 <td>5</td>
-<td>5</td>
+<td>Módulo 5</td>
 <td>Empleo e Ingresos</td>
 </tr>
 <tr>
 <td>6</td>
-<td>7</td>
+<td>Módulo 7</td>
 <td>Gastos en Alimentos y Bebidas/td>
 </tr>
 <tr>
 <td>7</td>
-<td>8</td>
+<td>Módulo 8</td>
 <td>Instituciones Benéficas</td>
 </tr>
 <tr>
 <td>8</td>
-<td>9</td>
+<td>Módulo 9</td>
 <td>Mantenimiento de la Vivienda</td>
 </tr>
 <tr>
 <td>9</td>
-<td>10</td>
+<td>Módulo 10</td>
 <td>Transportes y Comunicaciones</td>
 </tr>
 <tr>
 <td>10</td>
-<td>11</td>
+<td>Módulo 11</td>
 <td>Servicios de la Vivienda</td>
 </tr>
 <tr>
 <td>11</td>
-<td>12</td>
+<td>Módulo 12</td>
 <td>Esparcimiento, Diversión y Servicios Culturales</td>
 </tr>
 <tr>
@@ -224,22 +207,22 @@ Este script incluye el tratamiento de los siguientes módulos:
 </tr>
 <tr>
 <td>13</td>
-<td>15</td>
+<td>Módulo 15</td>
 <td>Gastos de Transferencias</td>
 </tr>
 <tr>
 <td>14</td>
-<td>16</td>
+<td>Módulo 16</td>
 <td>Muebles y Enseres</td>
 </tr>
 <tr>
 <td>15</td>
-<td>17</td>
+<td>Módulo 17</td>
 <td>Otros Bienes y Servicios</td>
 </tr>
 <tr>
 <td>16</td>
-<td>18</td>
+<td>Módulo 18</td>
 <td>Equipamiento del Hogar</td>
 </tr>
 <tr>
@@ -249,17 +232,17 @@ Este script incluye el tratamiento de los siguientes módulos:
 </tr>
 <tr>
 <td>18</td>
-<td>23</td>
+<td>Módulo 23</td>
 <td>Subproductos Agrícolas</td>
 </tr>
 <tr>
 <td>19</td>
-<td>24</td>
+<td>Módulo 24</td>
 <td>Producción Forestal</td>
 </tr>
 <tr>
 <td>20</td>
-<td>25</td>
+<td>Módulo 25</td>
 <td>Gastos en Actividades Agrícolas y/o Forestales</td>
 </tr>
 <tr>
@@ -269,51 +252,74 @@ Este script incluye el tratamiento de los siguientes módulos:
 </tr>
 <tr>
 <td>22</td>
-<td>27</td>
+<td>Módulo 27</td>
 <td>Subproductos Pecuarios</td>
 </tr>
 <tr>
 <td>23</td>
-<td>28</td>
+<td>Módulo 28</td>
 <td>Gastos en Actividades Pecuarias</td>
 </tr>
 <tr>
 <td>24</td>
-<td>34</td>
+<td>Módulo 34</td>
 <td>Variables Calculadas (Resumen)</td>
 </tr>
 <tr>
 <td>25</td>
-<td>37</td>
+<td>Módulo 37</td>
 <td>Programas Sociales</td>
 </tr>
 <tr>
 <td>26</td>
-<td>77</td>
+<td>Módulo 77</td>
 <td>Ingresos del Trabajador Independiente</td>
 </tr>
 <tr>
 <td>27</td>
-<td>78</td>
+<td>Módulo 78</td>
 <td>Bienes y Servicios para el Cuidado Personal</td>
 </tr>
 <tr>
 <td>28</td>
-<td>84</td>
+<td>Módulo 84</td>
 <td>Participación Ciudadana</td>
 </tr>
 <tr>
 <td>29</td>
-<td>85</td>
+<td>Módulo 85</td>
 <td>Gobernabilidad, Democracia y Transparencia</td>
 </tr>
 <tr>
 <td>30</td>
-<td>1825</td>
+<td>Módulo 1825</td>
 <td>Beneficiarios de Instituciones sin fines de lucro: Olla Común</td>
 </tr>
 </tbody>
 </table>
+
+## Resultado 📂<a id='3'></a>
+
+```
+01-ENAHO/ 
+│ 
+├──2004/ 
+│ ├── enaho01-2004.dta 
+│ ├── enaho02-2004.dta 
+│ └── ... 
+│ 
+├──2005/ 
+│ 
+├──... 
+│ 
+└──2025/
+```
+
+## ⚠️ Observaciones
+
+En algunos años, determinados archivos ZIP publicados por el INEI presentan inconsistencias que impiden su extracción automática mediante Stata.
+
+Cuando esto ocurre, el script muestra un mensaje indicando que el archivo debe descomprimirse manualmente. El archivo ZIP descargado se conserva para facilitar este proceso.
 
 ## Licencia
 Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENSE](/LICENSE) para más detalles.
