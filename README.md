@@ -326,6 +326,58 @@ ___
 
 El siguiente diagrama resume el flujo de ejecución del script para descargar y extraer automáticamente los módulos de la **Encuesta Nacional de Hogares (ENAHO)** correspondientes al período **2004–2025**.
 
+
+```mermaid
+flowchart LR
+
+A([Inicio])
+--> B[Configurar directorio]
+--> C{{Años<br/>2004–2025}}
+--> D[Obtener código<br/>de encuesta]
+--> E{{Módulos}}
+--> F[Descargar ZIP]
+--> G[Extraer ZIP]
+--> H{¿Extracción<br/>correcta?}
+
+H -- Sí --> E
+H -- No --> I[Conservar ZIP<br/>y mostrar advertencia]
+I --> E
+
+E --> J([Fin])
+```
+
+```mermaid
+---
+title: Flujo de descarga y extracción de la ENAHO (2004–2025)
+---
+flowchart LR
+
+A([Inicio]) --> B[Configurar directorio]
+B --> C[Crear carpeta ENAHO]
+C --> D{{Años<br/>2004–2025}}
+
+D --> E[Obtener<br/>Código de Encuesta]
+E --> F{{Módulos}}
+
+F --> G[Descargar<br/>ZIP]
+G --> H[Extraer<br/>ZIP]
+
+H --> I{¿Correcto?}
+
+I -- Sí --> J[Siguiente módulo]
+I -- No --> K[Conservar ZIP<br/>Mostrar advertencia]
+
+K --> J
+J --> F
+
+F --> L{¿Más años?}
+L -- Sí --> D
+L -- No --> M([Fin])
+```
+
+
+
+
 ```mermaid
 ---
 title: Flujo del proceso de descarga y extracción de la ENAHO (2004–2025)
