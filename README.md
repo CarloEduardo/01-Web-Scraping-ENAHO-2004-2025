@@ -1,29 +1,31 @@
-# Web Scraping: ENAHO 2004-2025 <a id='a'></a>
+# Web Scraping: ENAHO 2004–2025 <a id='a'></a>
 
-Este proyecto en **Stata** proporciona una forma eficiente e integral de descargar, organizar y procesar la **Encuesta de hogares del Perú (ENAHO)** del portal [Microdatos](https://proyectos.inei.gob.pe/microdatos/) (Metodología ACTUALIZADA) del **Instituto Nacional de Estadística e Informática**para todos los años disponibles, desde 2004 hasta 2025.
+Este proyecto en **Stata** proporciona una solución automatizada para descargar, organizar y procesar la **Encuesta Nacional de Hogares (ENAHO)** del Perú a partir del portal oficial de [**Microdatos**](https://proyectos.inei.gob.pe/microdatos/) del **Instituto Nacional de Estadística e Informática (INEI)**, utilizando la **metodología actualizada**. El script permite obtener la información disponible para todos los años comprendidos entre **2004 y 2025**.
 
-El objetivo ES automatiza la descarga de todos los módulos de la encuesta directamente desde las fuentes oficiales. Además, extrae automáticamente los archivos comprimidos (.zip), lo que permite construir un flujo de trabajo reproducible y eficiente para el procesamiento de datos. No obstante, en aquellos casos en que los archivos comprimidos presenten errores o inconsistencias, la extracción deberá realizarse de forma manual.
+El objetivo principal es automatizar la descarga de todos los módulos de la encuesta directamente desde los servidores oficiales del INEI. Además, el script descomprime automáticamente los archivos en formato **`.zip`**, lo que permite construir un flujo de trabajo eficiente, reproducible y fácilmente actualizable para el procesamiento de los microdatos. En aquellos casos en que los archivos comprimidos presenten errores o inconsistencias, el script conserva el archivo descargado y notifica al usuario que la extracción deberá realizarse manualmente.
 
-El proceso sigue una estructura jerárquica, iterando por los **años** definidos en las **Código Encuesta** y **modulo** definido por el **Código de Modulo**. 
+El proceso sigue una estructura jerárquica de iteración, recorriendo primero los **años de la encuesta** (identificados mediante el **Código de Encuesta**) y, posteriormente, los **módulos** (identificados mediante el **Código de Módulo**). Esta estructura facilita la descarga masiva de la información y permite personalizar fácilmente los años o módulos que se desean procesar.
 
-Para garantizar la trazabilidad y colaboración en el desarrollo, el proyecto se gestiona con **Git** y está alojado en **GitHub**, lo que permite el control de versiones y contribuciones de otros usuarios.
+Con el propósito de garantizar la reproducibilidad, la trazabilidad y el mantenimiento del proyecto, el código se gestiona mediante **Git** y se encuentra alojado en **GitHub**, lo que facilita el control de versiones, la documentación de los cambios y la colaboración con otros usuarios.
 
 ## Contenido
+___
 1. [**Requisitos**](#1)
 2. [**Instalación**](#2)
 3. [**Estructura del Proyecto**](#3)
 4. [**Uso**](#4)
+4. [**Observaciones**](#5)
 ___
 
 ## 1. Requisitos <a id='1'></a>
 
-Este proyecto fue desarrollado con:
-* **Stata 16**
-* **Git** (recomendado para clonar el repositorio)
+Para ejecutar este proyecto únicamente se requiere:
+- **Stata 16** o superior.
+- Permisos de escritura en el directorio donde se almacenarán los archivos descargados.
+- **Git** (opcional), para clonar el repositorio.
+---
 
-Para ejecutar se necesita tener instaladas las siguientes dependencias:
-
-## 2. Instalación y uso 🚀 <a id='2'></a>
+## 2. Instalación 🚀 <a id='2'></a>
 
 ### 2.1. Clonar el repositorio
 
@@ -34,47 +36,148 @@ Para ejecutar se necesita tener instaladas las siguientes dependencias:
 git clone https://github.com/CarloEduardo/01-Web-Scraping-ENAHO-2004-2025.git
 ```
 3. Establecer como directorio de trabajo la carpeta clonada.
-```bash
+```
 cd \E:\07. GitHub\01-Web-Scraping-ENAHO-2004-2025\
 ```
-### 2.2. Uso 
+## 2. Uso 
 
-1. Abrir el archivo 'Download-ENAHO-2004-2025.do' en Stata.
-
-2. Modificar la ruta de trabajo:
-global Path = "D:\MiProyecto\Web-Scraping-ENAHO-2004-2025"
-
-3. Ejecutar el script.
-
-## 3. Estructura del proyecto 📂<a id='3'></a>
-
+1. Abrir el archivo 
+```bash
+Download-ENAHO-2004-2025.do
 ```
-├── Download-ENAHO-2004-2025.do  # Script de Web-scraping
+
+2. Modificar la ruta donde se almacenarán los archivos descargados.
+```stata
+global Path = "D:\MiProyecto\Web-Scraping-ENAHO-2004-2025"
+```
+
+3. Si lo deseas, modificar el rango de años:
+```stata
+local year_start = 4
+local year_end   = 25
+```
+
+4. Seleccionar los módulos que deseas descargar:
+```stata
+foreach j in 1 2 3 4 5 {
+```
+
+5. Ejecutar el script.
+
+## 4. Estructura del proyecto 📂<a id="4"></a>
+```text
+.
+├── Download-ENAHO-2004-2025.do
+├── 01-ENAHO/
+│   ├──2004/
+│   ├──2005/
+│   ├──...
+│   └──2025/
 │
-├── ENAHO/
-│   ├── 2004/
-│   ├── 2005/
-│   ├── ...
-│   └── 2024/
-│
+├── LICENSE
 └── README.md
 ```
 
-A continuación se describe el script del web-scraping (*Download-ENAHO-2004-2025.do*)
+## 5. Funcionamiento del script <a id="5"></a>
 
-### 3.1. `a_config.py`
+El script realiza automáticamente las siguientes tareas:
 
-Define rutas, parámetros de ejecución, navegación en la web y procesamiento de datos. 
+1. Crea la estructura de carpetas del proyecto.
+2. Recorre los años seleccionados.
+3. Obtiene el Código de Encuesta correspondiente a cada año.
+4. Recorre los módulos seleccionados.
+5. Descarga cada archivo ZIP desde el portal oficial del INEI.
+6. Descomprime automáticamente cada archivo.
+7. Conserva el archivo ZIP cuando ocurre un error durante la extracción.
 
-* Configuración del directorio y URL.
+El proceso completo puede resumirse mediante el siguiente flujo:
 
-| **Variable**       | **Descripción**                           |
-|--------------------|-------------------------------------------|
-| `PATH_BASE`        | Directorio principal                        |
-| `PATH_DATA_RAW`    | Ruta donde se almacenan los datos crudos  |
-| `PATH_DATA_PRO`    | Ruta donde se guardan los datos preprocesados |
-| `PATH_DRIVER`      | Ubicación del WebDriver                   |
-| `URL`              | Plataforma de la cual se extraen los datos |
+```text
+Seleccionar años
+        │
+        ▼
+Crear carpetas
+        │
+        ▼
+Iterar por año
+        │
+        ▼
+Iterar por módulos
+        │
+        ▼
+Descargar ZIP
+        │
+        ▼
+Descomprimir
+        │
+        ├─────────────► Error
+        │                  │
+        ▼                  ▼
+Finaliza         Mantener ZIP para extracción manual
+```
+
+
+
+
+---
+
+## 6. Módulos disponibles <a id="6"></a>
+
+*(Aquí conservaría exactamente la tabla que ya elaboraste.)*
+
+---
+
+## 7. Resultado <a id="7"></a>
+
+Al finalizar la ejecución se obtiene una estructura similar a la siguiente:
+
+```text
+01-ENAHO/
+│
+├──2004/
+│   ├── enaho01-2004.dta
+│   ├── enaho02-2004.dta
+│   └── ...
+│
+├──2005/
+│
+├──...
+│
+└──2025/
+```
+
+Cada carpeta contiene todos los módulos descargados y extraídos para el año correspondiente.
+
+---
+
+## 8. Observaciones <a id="8"></a>
+
+En algunos años, determinados archivos ZIP publicados por el INEI presentan inconsistencias que impiden su extracción automática mediante Stata.
+
+Cuando esto ocurre, el script conserva el archivo comprimido y muestra un mensaje indicando que la extracción debe realizarse manualmente.
+
+---
+
+## 9. Licencia <a id="9"></a>
+
+Este proyecto se distribuye bajo la licencia **MIT**.
+
+Consulta el archivo **LICENSE** para obtener más información.
+
+---
+
+## 10. Contacto <a id="10"></a>
+
+**Carlos Eduardo Torres García**
+
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/carlo4-eduardo-torres-garcia/)
+
+[![X](https://img.shields.io/badge/X-000000?style=flat&logo=x&logoColor=white)](https://x.com/Carlo4_Eduardo)
+
+[**⬆ Volver al inicio**](#a)
+
+
+
 
 El siguiente diagrama muestra la lógica de todo el proceso para el caso de la **RUTA N°1: MUNICIPALIDADES**.
 
@@ -118,20 +221,6 @@ stateDiagram
 ```
 *Elaboración propia.* <br>
 ***Nota:** Este diagrama muestra el flujo de navegación y extracción de datos, detallando las iteraciones en la automatización. Implícitamente, después de cada `click_on_element()`, se ejecuta `switch_to_frame()`.*  
-
-### 4.2. Ajustar parámetros en `a_config.py`
- 
-Los valores predeterminados no requieren modificaciones, excepto `YEARS`, que debe modificarse según los años de interés para la extracción de datos.
-
-1. Abrir el `a_config.py`.
-
-2. Definir el rango de años.
-```python
-YEARS = list(range(2024, 2026))
-```
-Como resultado definirá los años 2024-2025 para el scraping (al definir un rango Python no incluye el rango superior).
-
-3. Guardar los cambios y cerrar `a_config.py`.
 
 Módulos
 
