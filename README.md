@@ -196,7 +196,7 @@ B --> C[Crear carpeta principal ENAHO]
     state "Iteración Años" as IA {    
         C --> D{{Iterar por años<br/>2004–2025}}
         D --> E[Obtener Código de Encuesta]
-    state "Iteración Años" as IA {           
+    state "Iteración por módulos" as IM {           
             E --> F{{Iterar por módulos}}
             F --> G[Construir URL de descarga]
             G --> H[Descargar archivo ZIP]
