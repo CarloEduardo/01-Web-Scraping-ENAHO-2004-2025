@@ -194,7 +194,7 @@ ___
 </tr>
 <tr>
 <td>12</td>
-<td>13</td>
+<td>Módulo 13</td>
 <td>Vestido y Calzado</td>
 </tr>
 <tr>
@@ -219,7 +219,7 @@ ___
 </tr>
 <tr>
 <td>17</td>
-<td>22</td>
+<td>Módulo 22</td>
 <td>Producción Agrícola</td>
 </tr>
 <tr>
@@ -239,7 +239,7 @@ ___
 </tr>
 <tr>
 <td>21</td>
-<td>26</td>
+<td>Módulo 26</td>
 <td>Producción Pecuaria</td>
 </tr>
 <tr>
@@ -289,10 +289,8 @@ ___
 </tr>
 </tbody>
 </table>
-___
 
-## 7. Resultado <a id="7"></a>
-___
+## 7. Resultado 📂<a id="7"></a>
 Al finalizar la ejecución se obtiene una estructura similar a la siguiente:
 
 ```text
@@ -309,36 +307,64 @@ Al finalizar la ejecución se obtiene una estructura similar a la siguiente:
 │
 └──2025/
 ```
-
 Cada carpeta contiene todos los módulos descargados y extraídos para el año correspondiente.
-___
 
-## 8. Observaciones <a id="8"></a>
-___
+## 8. Observaciones ⚠️<a id="8"></a>
 En algunos años, determinados archivos ZIP publicados por el INEI presentan inconsistencias que impiden su extracción automática mediante Stata.
-
-Cuando esto ocurre, el script conserva el archivo comprimido y muestra un mensaje indicando que la extracción debe realizarse manualmente.
-___
+Cuando esto ocurre, el script muestra un mensaje indicando que el archivo debe descomprimirse manualmente. El archivo ZIP descargado se conserva para facilitar este proceso.
 
 ## 9. Licencia <a id="9"></a>
-___
-Este proyecto se distribuye bajo la licencia **MIT**.
-
-Consulta el archivo **LICENSE** para obtener más información.
-___
+Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENSE](/LICENSE) para más detalles.
 
 ## 10. Contacto <a id="10"></a>
 ___
 **Carlos Eduardo Torres García**
-
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/carlo4-eduardo-torres-garcia/)
-
-[![X](https://img.shields.io/badge/X-000000?style=flat&logo=x&logoColor=white)](https://x.com/Carlo4_Eduardo)
-___
+[![X Twitter](https://img.shields.io/badge/Twitter-000000?style=flat&logo=x&logoColor=white)](https://x.com/Carlo4_Eduardo)
 
 [**⬆ Volver al inicio**](#a)
 
+El siguiente diagrama resume el flujo de ejecución del script para descargar y extraer automáticamente los módulos de la **Encuesta Nacional de Hogares (ENAHO)** correspondientes al período **2004–2025**.
 
+```mermaid
+---
+title: Flujo del proceso de descarga y extracción de la ENAHO (2004–2025)
+---
+flowchart TD
+
+A([Inicio]) --> B[Definir directorio de trabajo]
+B --> C[Crear carpeta principal ENAHO]
+
+C --> D{{Iterar por años<br/>2004–2025}}
+
+D --> E[Obtener Código de Encuesta]
+
+E --> F{{Iterar por módulos}}
+
+F --> G[Construir URL de descarga]
+
+G --> H[Descargar archivo ZIP]
+
+H --> I[Descomprimir archivo ZIP]
+
+I --> J{¿Extracción exitosa?}
+
+J -- Sí --> K[Continuar con el siguiente módulo]
+
+J -- No --> L[Conservar archivo ZIP<br/>Mostrar mensaje de extracción manual]
+
+L --> K
+
+K --> M{¿Quedan módulos?}
+
+M -- Sí --> F
+
+M -- No --> N{¿Quedan años?}
+
+N -- Sí --> D
+
+N -- No --> O([Fin])
+```
 
 
 El siguiente diagrama muestra la lógica de todo el proceso para el caso de la **RUTA N°1: MUNICIPALIDADES**.
@@ -366,55 +392,7 @@ stateDiagram
         LoopDepartamentos --> ClickDepartamento : click_on_element(i)
         ClickDepartamento --> SeleccionarProvincia : click_on_element()
     }
-    
-    %% Retornos a provincia
-    GuardaDatos --> VolverProvincia : driver.back()
-    VolverProvincia --> LoopProvincias : siguiente provincia
-    %% Retornos a departamento
-    LoopProvincias --> VolverDepartamento : driver.back()
-    VolverDepartamento --> LoopDepartamentos : siguiente departamento
-    %% Retornos a años
-    LoopDepartamentos --> VolverAño : driver.back()
-    VolverAño --> SeleccionarAño : siguiente año
-
-    %% Finalización del scraping
-    SeleccionarAño --> [*]: Fin iteración por año
-
 ```
 *Elaboración propia.* <br>
 ***Nota:** Este diagrama muestra el flujo de navegación y extracción de datos, detallando las iteraciones en la automatización. Implícitamente, después de cada `click_on_element()`, se ejecuta `switch_to_frame()`.*  
 
-
-
-## Resultado 📂<a id='3'></a>
-
-```
-01-ENAHO/ 
-│ 
-├──2004/ 
-│ ├── enaho01-2004.dta 
-│ ├── enaho02-2004.dta 
-│ └── ... 
-│ 
-├──2005/ 
-│ 
-├──... 
-│ 
-└──2025/
-```
-
-## ⚠️ Observaciones
-
-En algunos años, determinados archivos ZIP publicados por el INEI presentan inconsistencias que impiden su extracción automática mediante Stata.
-
-Cuando esto ocurre, el script muestra un mensaje indicando que el archivo debe descomprimirse manualmente. El archivo ZIP descargado se conserva para facilitar este proceso.
-
-## Licencia
-Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo [LICENSE](/LICENSE) para más detalles.
-
-## Contactos
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=flat&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/carlo4-eduardo-torres-garcia/)
-[![X Twitter](https://img.shields.io/badge/Twitter-000000?style=flat&logo=x&logoColor=white)](https://x.com/Carlo4_Eduardo)
-
-[**Subir ↑**](#a)
