@@ -47,13 +47,13 @@ Download-ENAHO-2004-2025.do
 
 2. Modificar la ruta donde se almacenarán los archivos descargados.
 ```stata
-global Path = "D:\MiProyecto\Web-Scraping-ENAHO-2004-2025"
+global Path = "E:\07. GitHub\01-Web-Scraping-ENAHO-2004-2025"
 ```
 
 3. Si lo deseas, modificar el rango de años:
 ```stata
-local year_start = 4
-local year_end   = 25
+local y_start = 4
+local y_end   = 25
 ```
 
 4. Seleccionar los módulos que deseas descargar:
@@ -222,6 +222,16 @@ ___
 <td>30</td>
 <td>Módulo 1825</td>
 <td>Beneficiarios de Instituciones sin fines de lucro: Olla Común</td>
+</tr>
+<tr>
+<td>31</td>
+<td>Módulo 2081</td>
+<td>Crianza de Mascotas en el Hogar</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Módulo 2082</td>
+<td>Inseguridad Alimentaria</td>
 </tr>
 </tbody>
 </table>

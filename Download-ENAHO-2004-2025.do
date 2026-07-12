@@ -71,8 +71,9 @@ matlist ENAHO_MODULES
 ********************************************************************************
 * Here you can choose the range of years you want to download
 local y_start         = 4
-local y_start_minus_1 = `y_start' - 1
 local y_end           = 25
+
+local y_start_minus_1 = `y_start' - 1
 
 forvalues i = `y_start'(1)`y_end' {
     local year = 2000 + `i'
