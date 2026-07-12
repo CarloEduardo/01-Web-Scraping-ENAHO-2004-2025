@@ -1,2 +1,3 @@
-# # Ignorar la carpeta "01. ENAHO"
-/ENAHO/
+# La carpeta "ENAHO" existirá en el repositorio, pero que todo su contenido sea ignorado
+/ENAHO/*
+!/ENAHO/.gitkeep

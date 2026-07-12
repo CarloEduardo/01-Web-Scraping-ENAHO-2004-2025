@@ -18,8 +18,8 @@ capture mkdir "$Dataset"
 ********************************************************************************
 * Years:
 ********************************************************************************
-* (2004/2005/2006/2007/2008/2009/2010/2011/2012/2013/2014/2015/2016/2017/2018/2019/2020/2021/2022/2023/2024)	
-mat ENAHO_YEARS = (280\281\282\283\284\285\279\291\324\404\440\498\546\603\634\687\737\759\784\906\966)
+* (2004/2005/2006/2007/2008/2009/2010/2011/2012/2013/2014/2015/2016/2017/2018/2019/2020/2021/2022/2023/2024/2025)	
+mat ENAHO_YEARS = (280\281\282\283\284\285\279\291\324\404\440\498\546\603\634\687\737\759\784\906\966\1031)
 
 ********************************************************************************
 * Modules:
@@ -53,10 +53,13 @@ mat ENAHO_YEARS = (280\281\282\283\284\285\279\291\324\404\440\498\546\603\634\6
 *27. Module	78 – Bienes y Servicios de Cuidados Personales				
 *28. Module	84 – Participación Ciudadana				
 *29. Module	85 – Gobernabilidad, Democracia y Transparencia	
+*30. Module	1825 – Beneficiarios de Instituciones sin fines de lucro: Olla Común
+*31. Module	2081 – Crianza de Mascotas en el Hogar
+*32. Module	2082 – Inseguridad Alimentaria
 
-mat base_modules = (1,2,3,4,5,7,8,9,10,11,12,13,15,16,17,18,22,23,24,25,26,27,28,34,37,77,78,84,85)
-mat ENAHO_MODULES = J(21,29,.)
-forvalues r = 1(1)21 {
+mat base_modules = (1,2,3,4,5,7,8,9,10,11,12,13,15,16,17,18,22,23,24,25,26,27,28,34,37,77,78,84,85,1825,2081,2082)
+mat ENAHO_MODULES = J(22,32,.)
+forvalues r = 1(1)22 {
     mat ENAHO_MODULES[`r',1] = base_modules
 }
 
@@ -67,12 +70,13 @@ matlist ENAHO_MODULES
 * Download and extract ENAHO modules
 ********************************************************************************
 * Here you can choose the range of years you want to download
-local y_start = 4
-local y_end   = 25
+local y_start         = 4
+local y_start_minus_1 = `y_start' - 1
+local y_end           = 25
 
 forvalues i = `y_start'(1)`y_end' {
     local year = 2000 + `i'
-    local t    = `i' - `year_start' - 1
+    local t    = `i' - `y_start_minus_1'
     
     capture mkdir "$Dataset/`year'"
     cd            "$Dataset/`year'"
@@ -80,7 +84,7 @@ forvalues i = `y_start'(1)`y_end' {
     local survey_id = ENAHO_YEARS[`t',1]
     
 	* Here you can choose which modules you want to download
-	foreach j in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 {
+	foreach j in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 {
         
         local survey_mod = ENAHO_MODULES[`t',`j']
         

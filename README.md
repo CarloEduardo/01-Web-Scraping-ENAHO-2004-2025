@@ -274,7 +274,7 @@ N -- No --> O([Fin])
 Al finalizar la ejecución se obtiene una estructura similar a la siguiente:
 
 ```text
-01-ENAHO/
+ENAHO/
 │
 ├──2004/
 │   ├── enaho01-2004.dta
